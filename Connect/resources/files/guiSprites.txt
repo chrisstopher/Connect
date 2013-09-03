@@ -1,0 +1,8 @@
+numbers.png				16	16
+alphabet.png				16	16
+buttonarrowupoutlined.png		16	8
+buttonarrowdownoutlined.png		16	8
+underlinedstartoutlined.png		80	24
+underlinedbackoutlined.png		80	24
+underlinedresetoutlined.png		80	24
+underlinedagainoutlined.png		80	24

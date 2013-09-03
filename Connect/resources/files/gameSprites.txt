@@ -1,0 +1,2 @@
+connect.png	48	48
+numbers.png	16	16
