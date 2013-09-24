@@ -37,6 +37,8 @@ private:
 	int convertToColumnIndex(int i);
 	int convertToRowIndex(int i);
 
+	bool columnhasNoCheckers(int x);
+
 	bool testsTheColumn(int column, int row, int playerId);
 		bool testsTheColumnForConnectCount(int startAt, int whichColumn, int playerId);//do not need count here because not possible to have more than the count vertically connected
 

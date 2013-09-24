@@ -74,14 +74,26 @@ bool Board::columnIsNotFull(int x) {
 }
 
 /*
+Checks if the last position in the column x
+has a checker or not
+*/
+bool Board::columnhasNoCheckers(int x) {
+	return grid(x, grid.maxRows() - 1) == NO_CHECKER;
+}
+
+/*
 columnIsNotFull and isOver has to be called before this gets called that is what makes the last return not get reached
 Traverses a column to find the position in the column that has a checker below it
 or if there is no checker in the column and puts it there
 */
 Position& Board::getEndingPosition(int x, int type) {
 	x = convertToColumnIndex(x);
-	for (int y = 0; y < grid.maxRows(); y++) {
-		if (y + 1 > grid.maxRows()-1 || grid(x, y + 1) != NO_CHECKER) {
+	if (columnhasNoCheckers(x)) {
+		grid(x, grid.maxRows() - 1) = type;
+		return position(x, grid.maxRows() - 1);
+	}
+	for (int y = 0; y < grid.maxRows() - 1; y++) {
+		if (grid(x, y + 1) != NO_CHECKER) {
 			grid(x, y) = type;
 			return position(x, y);
 		}
