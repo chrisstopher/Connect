@@ -28,9 +28,8 @@ converts the mouse's x position to the position of the grid that you clicked in 
 then adds it to the board above the screen and sets the ending position and color
 */
 void Player::dropChecker(int mouseX, Board* board) {
-	int temp = mouseX;
 	mouseX = convertToGridPosition(mouseX, board->startingPosition().x);
-	board->add(new Checker(Position(mouseX, -SPRITE_HEIGHT), board->setEndingPosition(temp, ID), color));
+	board->add(new Checker(Position(mouseX, -SPRITE_HEIGHT), board->getEndingPosition(mouseX, ID), color));
 }
 
 /*
