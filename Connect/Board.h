@@ -16,7 +16,7 @@ public:
 	~Board();
 	bool isOver(int x, int y);
 	bool columnIsNotFull(int x);
-	Position& setEndingPosition(int x, int type);
+	Position& getEndingPosition(int x, int type);
 	bool full();
 	void add(Checker* checker);
 	void update();

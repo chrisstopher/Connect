@@ -78,7 +78,7 @@ columnIsNotFull and isOver has to be called before this gets called that is what
 Traverses a column to find the position in the column that has a checker below it
 or if there is no checker in the column and puts it there
 */
-Position& Board::setEndingPosition(int x, int type) {
+Position& Board::getEndingPosition(int x, int type) {
 	x = convertToColumnIndex(x);
 	for (int y = 0; y < grid.maxRows(); y++) {
 		if (y + 1 > grid.maxRows()-1 || grid(x, y + 1) != NO_CHECKER) {
