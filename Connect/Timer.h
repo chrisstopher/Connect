@@ -12,17 +12,17 @@ enum TIME_CONVERSION {
 class Timer {
 public:
 	Timer(float seconds);
-	int milliseconds() const;
-	int seconds() const;
-	bool timesUp() const;
-	bool lessThanOneSecondBeforeTimesUp();
-	void reset();
-	void reset(float seconds);
-	void resetms(int ms);
-	bool isRunning() const;
+	virtual int milliseconds() const;
+	virtual int seconds() const;
+	virtual bool timesUp() const;
+	virtual bool lessThanOneSecondBeforeTimesUp();
+	virtual void reset();
+	virtual void reset(float seconds);
+	virtual void resetms(int ms);
+	virtual bool isRunning() const;
+	virtual int getDelayInSeconds();
 private:
 	Uint32 countdown;
-	bool start;
 	int delay;
 };
 
