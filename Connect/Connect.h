@@ -6,12 +6,13 @@
 #include "Board.h"
 #include "PlayerManager.h"
 #include "Timer.h"
+#include "NoTimer.h"
 #include "PlayerIndicator.h"
 #include "FileNames.h"
 
 class Connect {
 public:
-	Connect(int players, int timeLimit, int connectAmount, int rows, int columns);
+	Connect(int players, Timer* timer, int connectAmount, int rows, int columns);
 	bool load();
 	void onClick(int x, int y);
 	void logic();

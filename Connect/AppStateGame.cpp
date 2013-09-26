@@ -27,7 +27,17 @@ void AppStateGame::OnActivate() {
 	for (int i = 0; i < 5; i++) {
 		file >> args[i];
 	}
-	connect = new Connect(args[0], args[1], args[2], args[3], args[4]);
+	Timer* timer;
+	switch (args[1]) {
+		case 0:
+			timer = new NoTimer();
+			break;
+		default:
+			timer = new Timer(args[1]);
+			break;
+
+	}
+	connect = new Connect(args[0], timer, args[2], args[3], args[4]);
 	file.close();
 	if (!connect->load()) {
 		std::cout << "Could not load connect.\n";

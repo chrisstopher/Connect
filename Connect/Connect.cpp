@@ -1,18 +1,18 @@
 #include "Connect.h"
 
-Connect::Connect(int players, int timeLimit, int connectAmount, int rows, int columns)
+Connect::Connect(int players, Timer* timer, int connectAmount, int rows, int columns)
 	: PLAYER_COUNT(players),
 	  CONNECT_AMOUNT(connectAmount),
 	  ROWS(rows), COLUMNS(columns),
 	  MIN_ROWS(connectAmount), MIN_COLUMNS(connectAmount),
-	  MOVE_TIME_LIMIT(timeLimit > 0 ? timeLimit + 1 : 0),
+	  MOVE_TIME_LIMIT(timer->getDelayInSeconds() > 0 ? timer->getDelayInSeconds() + 1 : 0),
 	  sprites(NULL),
 	  board(NULL),
 	  players(NULL),
 	  gameOver(false),
 	  reset(false),
 	  boardColor(0, 0, 0),
-	  countdown(NULL),
+	  countdown(timer),
 	  COUNTDOWN_POSITION(SCREEN_WIDTH / 2 - FONT_WIDTH / 2, 64),
 	  canDropChecker(true),
 	  playerIndicator(NULL) {
@@ -54,7 +54,7 @@ bool Connect::load() {
 	if (!sprites->load(GAME_SPRITES_FILE)) {
 		return false;
 	}
-	countdown = new Timer(MOVE_TIME_LIMIT);
+	countdown->reset((float)MOVE_TIME_LIMIT);
 	return true;
 }
 
