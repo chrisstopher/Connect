@@ -359,6 +359,18 @@
 				RelativePath=".\Timer.h"
 				>
 			</File>
+			<Filter
+				Name="NoTimer"
+				>
+				<File
+					RelativePath=".\NoTimer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NoTimer.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="GUI"
