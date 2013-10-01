@@ -86,15 +86,13 @@ columnIsNotFull and isOver has to be called before this gets called that is what
 Traverses a column to find the position in the column that has a checker below it
 or if there is no checker in the column and puts it there
 */
-Position& Board::getEndingPosition(int x, int type) {
+Position& Board::getEndingPosition(int x) {
 	x = convertToColumnIndex(x);
 	if (columnhasNoCheckers(x)) {
-		grid(x, grid.maxRows() - 1) = type;
 		return position(x, grid.maxRows() - 1);
 	}
 	for (int y = 0; y < grid.maxRows() - 1; y++) {
 		if (grid(x, y + 1) != NO_CHECKER) {
-			grid(x, y) = type;
 			return position(x, y);
 		}
 	}
@@ -108,8 +106,12 @@ bool Board::full() {
 	return grid.maxColumns() * grid.maxRows() == checkers.size();
 }
 
-void Board::add(Checker* checker) {
+void Board::add(Checker* checker, int type) {
 	checkers.add(checker);
+	int gridPositionX = convertToColumnIndex(checker->getEndingPosition().x);
+	int gridPositionY = convertToRowIndex(checker->getEndingPosition().y);
+	grid(gridPositionX, gridPositionY) = type;
+
 }
 /*
 Updates the checkers positions
@@ -519,4 +521,16 @@ void Board::dropAllCheckers() {
 
 bool Board::lastCheckerFullyDropped() {
 	return checkers.lastCheckerDropInPlace();
+}
+
+void Board::placeFadedChecker(int x, int y, Color& color, bool gameOver) {
+	if (!isOver(x, y) || !columnIsNotFull(x) || gameOver) {
+		checkers.dontDrawPlacingChecker();
+		return;
+	}
+	Color fadedColor = color;
+	fadedColor.a = 127;
+	Position endingPosition = getEndingPosition(x);
+	checkers.setPlacingChecker(endingPosition.x, endingPosition.y, fadedColor);
+	checkers.drawPlacingChecker();
 }

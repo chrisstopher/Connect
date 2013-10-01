@@ -16,9 +16,9 @@ public:
 	~Board();
 	bool isOver(int x, int y);
 	bool columnIsNotFull(int x);
-	Position& getEndingPosition(int x, int type);
+	Position& getEndingPosition(int x);
 	bool full();
-	void add(Checker* checker);
+	void add(Checker* checker, int type);
 	void update();
 	bool hasBeenWonBy(Player* player);
 	void draw(Sprite* sprite);
@@ -26,6 +26,8 @@ public:
 	Position& startingPosition();
 	void dropAllCheckers();
 	bool lastCheckerFullyDropped();
+
+	void placeFadedChecker(int x, int y, Color& color, bool gameOver);
 private:
 	enum { NO_CHECKER = 0 };
 	Dynamic2dArray<int> grid;
