@@ -14,6 +14,7 @@ public:
 	Color& getColor();
 	void setAlpha(GLubyte a);
 	void setEndingPosition(Position& endAt);
+	void setColor(Color& newColor);
 private:
 	static const int DROP_SPEED = 10;
 	Position position, end;

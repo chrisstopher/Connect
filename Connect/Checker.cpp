@@ -34,3 +34,7 @@ void Checker::setAlpha(GLubyte a) {
 void Checker::setEndingPosition(Position& endAt) {
 	end = endAt;
 }
+
+void Checker::setColor(Color& newColor) {
+	color = newColor;
+}
