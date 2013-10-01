@@ -71,6 +71,11 @@ void AppStateGame::OnLButtonUp(int mX, int mY) {
 		}
 	}
 }
+
+void AppStateGame::OnMouseMove(int mX, int mY, int relX, int relY, bool Left, bool Right, bool Middle) {
+	connect->onMouseMove(mX, mY, relX, relY, Left, Right, Middle);
+}
+
 void AppStateGame::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
 	switch (sym) {
 		case SDLK_a:

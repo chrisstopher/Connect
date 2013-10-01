@@ -29,6 +29,7 @@ class AppStateGame : public AppState {
 		virtual void OnDeactivate();
 		
 			void OnLButtonUp(int mX, int mY);
+			void OnMouseMove(int mX, int mY, int relX, int relY, bool Left, bool Right, bool Middle);
 			void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
 
 		virtual void OnLoop();
