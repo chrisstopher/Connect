@@ -22,8 +22,13 @@ public:
 	void fadeTheCheckersAt(std::vector<Position>& positions);
 	Position& getLastCheckerDroppedPosition();
 	unsigned int size() const;
+	void setPlacingChecker(int x, int y, Color& color);
+	void drawPlacingChecker();
+	void dontDrawPlacingChecker();
 private:
 	std::vector<Checker*> checkers;
+	Checker placingChecker;
+	bool drawingPlacingChecker;
 	static const int ALPHA_DEFAULT = 255;
 	Oscillator fader;
 	std::vector<int> winningCheckersIndexes;

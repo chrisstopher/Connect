@@ -1,6 +1,6 @@
 #include "CheckerManager.h"
 
-CheckerManager::CheckerManager() : fader(ALPHA_DEFAULT, 4, 0, ALPHA_DEFAULT, true, 0) {
+CheckerManager::CheckerManager() : placingChecker(Position(), Position(), Color()), drawingPlacingChecker(false), fader(ALPHA_DEFAULT, 4, 0, ALPHA_DEFAULT, true, 0) {
 
 }
 
@@ -39,6 +39,12 @@ void CheckerManager::draw(Sprite* sprite) {
 		sprite->translateTo(checkers[i]->currentPosition());
 		sprite->draw(0, 0, CHECKER_FRAME);
 	}
+	if (drawingPlacingChecker) {
+		sprite->changeTextureColorAt(CHECKER_FRAME, placingChecker.getColor());
+		sprite->translateTo(placingChecker.getEndingPosition());
+		sprite->draw(0, 0, CHECKER_FRAME);
+	}
+	
 }
 
 /*
@@ -103,4 +109,17 @@ Position& CheckerManager::getLastCheckerDroppedPosition() {
 
 unsigned int CheckerManager::size() const {
 	return checkers.size();
+}
+
+void CheckerManager::setPlacingChecker(int x, int y, Color& color) {
+	placingChecker.setColor(color);
+	placingChecker.setEndingPosition(Position(x, y));
+}
+
+void CheckerManager::drawPlacingChecker() {
+	drawingPlacingChecker = true;
+}
+
+void CheckerManager::dontDrawPlacingChecker() {
+	drawingPlacingChecker = false;
 }
