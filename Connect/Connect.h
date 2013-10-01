@@ -15,6 +15,7 @@ public:
 	Connect(int players, Timer* timer, int connectAmount, int rows, int columns);
 	bool load();
 	void onClick(int x, int y);
+	void onMouseMove(int mX, int mY, int relX, int relY, bool Left, bool Right, bool Middle);
 	void logic();
 	void draw();
 	void free();

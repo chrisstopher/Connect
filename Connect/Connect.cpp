@@ -77,6 +77,11 @@ void Connect::onClick(int mX, int mY) {
 		gameOver = true;
 	}
 	rotateTurns();
+	board->placeFadedChecker(mX, mY, players->getCurrentPlayer()->getColor(), gameOver);
+}
+
+void Connect::onMouseMove(int mX, int mY, int relX, int relY, bool Left, bool Right, bool Middle) {
+	board->placeFadedChecker(mX, mY, players->getCurrentPlayer()->getColor(), gameOver);
 }
 
 void Connect::logic() {
