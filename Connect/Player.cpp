@@ -29,7 +29,7 @@ then adds it to the board above the screen and sets the ending position and colo
 */
 void Player::dropChecker(int mouseX, Board* board) {
 	mouseX = convertToGridPosition(mouseX, board->startingPosition().x);
-	board->add(new Checker(Position(mouseX, -SPRITE_HEIGHT), board->getEndingPosition(mouseX, ID), color));
+	board->add(new Checker(Position(mouseX, -SPRITE_HEIGHT), board->getEndingPosition(mouseX), color), ID);
 }
 
 /*
