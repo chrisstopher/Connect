@@ -15,6 +15,10 @@ public:
 	bool load(const char* filename);
 	unsigned size();
 	Sprite* at(unsigned i);
+    enum SPRITE_INDEXES {
+		GAME_SPRITE = 0,
+		FONT_SPRITE = 1,
+	};
 private:
 	std::vector<Sprite*> Sprites;
 };
