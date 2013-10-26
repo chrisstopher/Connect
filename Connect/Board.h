@@ -27,7 +27,8 @@ public:
 	void dropAllCheckers();
 	bool lastCheckerFullyDropped();
 
-	void placeFadedChecker(int x, int y, Color& color, bool gameOver);
+	void placeFadedChecker(int x, int y, Color& color);
+    void dontDrawFadedChecker();
 private:
 	enum { NO_CHECKER = 0 };
 	Dynamic2dArray<int> grid;

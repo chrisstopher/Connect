@@ -523,8 +523,8 @@ bool Board::lastCheckerFullyDropped() {
 	return checkers.lastCheckerDropInPlace();
 }
 
-void Board::placeFadedChecker(int x, int y, Color& color, bool gameOver) {
-	if (!isOver(x, y) || !columnIsNotFull(x) || gameOver) {
+void Board::placeFadedChecker(int x, int y, Color& color) {
+	if (!isOver(x, y) || !columnIsNotFull(x)) {
 		checkers.dontDrawPlacingChecker();
 		return;
 	}
@@ -533,4 +533,8 @@ void Board::placeFadedChecker(int x, int y, Color& color, bool gameOver) {
 	Position endingPosition = getEndingPosition(x);
 	checkers.setPlacingChecker(endingPosition.x, endingPosition.y, fadedColor);
 	checkers.drawPlacingChecker();
+}
+
+void Board::dontDrawFadedChecker() {
+    checkers.dontDrawPlacingChecker();
 }
