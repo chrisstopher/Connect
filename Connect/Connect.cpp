@@ -6,15 +6,13 @@ Connect::Connect(int players, Timer* timer, int connectAmount, int rows, int col
 	  ROWS(rows), COLUMNS(columns),
 	  MIN_ROWS(connectAmount), MIN_COLUMNS(connectAmount),
 	  MOVE_TIME_LIMIT(timer->getDelayInSeconds() > 0 ? timer->getDelayInSeconds() + 1 : 0),
+      connectStateManager(new ConnectStateManager(this)),
 	  sprites(NULL),
 	  board(NULL),
 	  players(NULL),
-	  gameOver(false),
-	  reset(false),
 	  boardColor(0, 0, 0),
 	  countdown(timer),
 	  COUNTDOWN_POSITION(SCREEN_WIDTH / 2 - FONT_WIDTH / 2, 64),
-	  canDropChecker(true),
 	  playerIndicator(NULL) {
 
 }
@@ -58,60 +56,29 @@ bool Connect::load() {
 	return true;
 }
 
-/*
-Makes sure that the user can click and that it was a valid location
-Then drop the checker
-Check if the game has been won
-Check if board is full
-then Rotate turns
-*/
 void Connect::onClick(int mX, int mY) {
-	if (gameOver || !canDropChecker || !board->isOver(mX, mY) || !board->columnIsNotFull(mX)) {
-		return;
-	}
-	players->getCurrentPlayer()->dropChecker(mX, board);			
-	if (board->hasBeenWonBy(players->getCurrentPlayer())) {
-		players->getCurrentPlayer()->increScore();
-		gameOver = true;
-	} else if (board->full()) {
-		gameOver = true;
-	}
-	rotateTurns();
-	board->placeFadedChecker(mX, mY, players->getCurrentPlayer()->getColor(), gameOver);
+    connectStateManager->onClick(mX, mY, players, board);
 }
 
 void Connect::onMouseMove(int mX, int mY, int relX, int relY, bool Left, bool Right, bool Middle) {
-	board->placeFadedChecker(mX, mY, players->getCurrentPlayer()->getColor(), gameOver);
+    connectStateManager->onMouseMove(mX, mY, board, players->getCurrentPlayer()->getColor());
 }
 
 void Connect::logic() {
 	playerIndicator->update();
 	board->update();
-	resetGame();
-	updateTimer();
+    connectStateManager->update(countdown, MOVE_TIME_LIMIT, SWITCH_PLAYERS_TIME_LIMIT, board);
 }
 
 /*
-Draws the countdown if it is running
-Draws every player
+Draws different things depending on the state
 Draws the board
 Draws the player indicator
 */
 void Connect::draw() {
-	if (!gameOver && countdown->isRunning()) {
-		Color fontColor((!canDropChecker ? boardColor : players->getCurrentPlayer()->getColor()));
-		sprites->at(FONT_SPRITE)->start();
-		sprites->at(FONT_SPRITE)->translateTo(COUNTDOWN_POSITION.x, COUNTDOWN_POSITION.y);
-		int frame = (countdown->seconds() < 1 ? 1 : countdown->seconds());
-		sprites->at(FONT_SPRITE)->changeTextureColorAt(frame, fontColor);
-		sprites->at(FONT_SPRITE)->draw(0, 0, frame);
-		sprites->at(FONT_SPRITE)->end();
-	}
-	players->draw(sprites->at(FONT_SPRITE));
-	board->draw(sprites->at(GAME_SPRITE));
-	if (canDropChecker && !gameOver) {
-		playerIndicator->draw(sprites->at(GAME_SPRITE));
-	}
+    connectStateManager->draw(sprites, players->getCurrentPlayer(), playerIndicator, countdown, COUNTDOWN_POSITION);
+    players->draw(sprites->at(SpriteManager::FONT_SPRITE));
+	board->draw(sprites->at(SpriteManager::GAME_SPRITE));
 }
 
 void Connect::free() {
@@ -130,50 +97,26 @@ void Connect::free() {
 	if (players) {
 		delete players;
 	}
+    if (connectStateManager) {
+        delete connectStateManager;
+    }
 }
 
 /*
 Gets called by app state game play again
 */
 void Connect::dropCheckers() {
-	if (gameOver && board->lastCheckerFullyDropped()) {
-		board->dropAllCheckers();
-		reset = true;
-	}
-}
-
-void Connect::resetGame() {
-	if (!reset || !board->lastCheckerFullyDropped()) {
-		return;
-	}
-	reset = false;
-	gameOver = false;
-	board->reset();
-	countdown->reset(MOVE_TIME_LIMIT);
-}
-
-void Connect::updateTimer() {
-	if (gameOver || !countdown->lessThanOneSecondBeforeTimesUp()) {
-		return;
-	}
-	if (!canDropChecker) {
-		canDropChecker = true;
-		rotateTurns();
-	} else {
-		canDropChecker = false;
-		countdown->reset(SWITCH_PLAYERS_TIME_LIMIT);
-	}
+    board->dropAllCheckers();
+    connectStateManager->setState(connectStateManager->getResettingState());
 }
 
 /*
 Gets called by app state game reset
 */
 void Connect::startOver() {
-	if (gameOver && board->lastCheckerFullyDropped()) {
-		players->resetPlayerScoresAndWhosTurn();
-		playerIndicator->setX(players->getCurrentPlayer()->getFontPosition().x - INDICATOR_X_OFFSET);
-		dropCheckers();
-	}
+    players->resetPlayerScoresAndWhosTurn();
+	playerIndicator->setX(players->getCurrentPlayer()->getFontPosition().x - INDICATOR_X_OFFSET);
+	dropCheckers();
 }
 
 bool Connect::allPlayersLastCheckerInPlace() {
@@ -181,7 +124,7 @@ bool Connect::allPlayersLastCheckerInPlace() {
 }
 
 bool Connect::gameIsOver() const {
-	return gameOver;
+	return connectStateManager->gameOver();
 }
 
 void Connect::rotateTurns() {
