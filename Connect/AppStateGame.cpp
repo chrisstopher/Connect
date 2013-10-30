@@ -77,23 +77,23 @@ void AppStateGame::OnMouseMove(int mX, int mY, int relX, int relY, bool Left, bo
 }
 
 void AppStateGame::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
-	switch (sym) {
-		case SDLK_a:
-		case SDLK_SPACE:
-			connect->dropCheckers();
-			break;
-		case SDLK_r:
-			connect->startOver();
-			break;
-		case SDLK_ESCAPE:
-		case SDLK_b:
-			if (connect->gameIsOver() && connect->allPlayersLastCheckerInPlace()) {
-				AppStateManager::SetActiveAppState(APPSTATE_MENU);
-			}
-			break;
-		default:
-			break;
-	}
+	if (connect->gameIsOver() && connect->allPlayersLastCheckerInPlace()) {
+        switch (sym) {
+		    case SDLK_a:
+		    case SDLK_SPACE:
+			    connect->dropCheckers();
+			    break;
+		    case SDLK_r:
+			    connect->startOver();
+			    break;
+		    case SDLK_ESCAPE:
+		    case SDLK_b:
+		        AppStateManager::SetActiveAppState(APPSTATE_MENU);
+			    break;
+		    default:
+			    break;
+	    }
+    }
 }
 
 //-----------------------------------------------------------------------------
